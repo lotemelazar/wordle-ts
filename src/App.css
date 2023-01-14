@@ -1,0 +1,114 @@
+.container {
+  display: grid;
+  grid-column: auto;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  height: 60px;
+  width: 100%;
+  margin: 0;
+  border-bottom: 1px solid grey;
+}
+
+header h1 {
+  margin: 0;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 45px;
+}
+header span {
+  margin: 0;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 45px;
+}
+
+header span:hover {
+  cursor: pointer;
+}
+
+/* .board {
+  display: grid;
+  grid-column: auto;
+  justify-items: center;
+  border: solid;
+} */
+
+.board {
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  justify-self: center;
+  gap: 10px;
+  margin-top: 2%;
+}
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+.letter {
+  display: block;
+  border: solid;
+  width: 60px;
+  height: 60px;
+  border-radius: 10%;
+  margin: 1%;
+  margin-top: 0%;
+  margin-bottom: 0%;
+}
+
+.keyboard {
+  display: block;
+  width: 700px;
+  height: 300px;
+  margin-top: 2%;
+
+  justify-self: center;
+}
+
+.line1 {
+  display: flex;
+  flex-direction: row;
+  display: flex;
+  justify-content: center;
+}
+
+.line2 {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.line3 {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+button {
+  border: 1px solid grey;
+  border-radius: 10%;
+  width: calc(80% / 10);
+  height: 50px;
+  margin: 2px;
+  place-items: center;
+  font-size: 20px;
+  font-weight: bolder;
+}
+
+button:hover {
+  cursor: pointer;
+  background-color: lightgray;
+}
+
+.welcome {
+  display: grid;
+  justify-content: center;
+}
+
+.btn {
+  justify-self: center;
+  width: 50%;
+  border-radius: 0%;
+}
