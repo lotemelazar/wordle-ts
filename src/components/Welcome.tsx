@@ -1,9 +1,5 @@
 import React from "react";
 
-// interface page {
-//   setPage: ()=> {};
-// }
-
 function Welcome(props: any): JSX.Element {
   return (
     <div className="welcome">
