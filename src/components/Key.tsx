@@ -1,11 +1,11 @@
-import React, { useContext } from "react";
-import { AppContext } from "../App";
+import React, { useContext } from 'react';
+import { AppContext } from '../App';
 
 function Key({ keyVal }: any) {
-  const { onSelectLetter, onDelete, onEnter } = useContext(AppContext);
+  const { onSelectLetter, onDelete } = useContext(AppContext);
 
   const selectLetter = () => {
-    if (keyVal === "DELETE") {
+    if (keyVal === 'DELETE') {
       onDelete();
     } else {
       onSelectLetter(keyVal);
@@ -13,7 +13,7 @@ function Key({ keyVal }: any) {
   };
 
   return (
-    <div className="key" onClick={selectLetter}>
+    <div className="key" id={keyVal} onClick={selectLetter}>
       {keyVal}
     </div>
   );
