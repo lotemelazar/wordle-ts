@@ -2,7 +2,12 @@ import React, { useState } from 'react';
 import Login from './Login';
 import Info from './Info';
 
-function Header(): JSX.Element {
+type Props = {
+  handleFormLoginOpen: (value: boolean) => void;
+};
+
+function Header(props: Props): JSX.Element {
+  const { handleFormLoginOpen } = props;
   const [showHelpModal, setShowHelpModal] = useState<boolean>(false);
   const [showLoginModal, setShowLoginModal] = useState<boolean>(false);
   const [login, setLogin] = useState<boolean>(false);
@@ -14,15 +19,19 @@ function Header(): JSX.Element {
     setLogin(true);
     setShowLoginModal(false);
     setFormLoginOpen(false);
+    handleFormLoginOpen(false);
+    localStorage.setItem('username', username);
   };
 
   const handleLogout = () => {
     setLogin(false);
     setUsername('');
+    localStorage.removeItem('username');
   };
   const handleLogin = () => {
     setShowLoginModal(true);
     setFormLoginOpen(true);
+    handleFormLoginOpen(true);
   };
   return (
     <>
@@ -50,7 +59,3 @@ function Header(): JSX.Element {
   );
 }
 export default Header;
-
-//////////////////////////////////////////////////////////////////////////
-
-//////////////////////////////////////////////////////////////////////////

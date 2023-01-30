@@ -1,7 +1,5 @@
 import React from 'react';
 
-// import React, { useState, useContext, createContext } from 'react';
-
 function Info(props: any): JSX.Element {
   if (!props.showHelpModal) {
     return <></>;

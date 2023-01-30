@@ -1,17 +1,16 @@
-// import { event } from "cypress/types/jquery";
-import React, { useCallback, useEffect, useContext } from "react";
-import { AppContext } from "../App";
-import Key from "./Key";
+import React, { useCallback, useEffect, useContext } from 'react';
+import { AppContext } from '../App';
+import Key from './Key';
 
 function Keyboard() {
-  const keys1 = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"];
-  const keys2 = ["A", "S", "D", "F", "G", "H", "J", "K", "L"];
-  const keys3 = ["Z", "X", "C", "V", "B", "N", "M"];
+  const keys1 = ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'];
+  const keys2 = ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'];
+  const keys3 = ['Z', 'X', 'C', 'V', 'B', 'N', 'M'];
   const { onSelectLetter, onDelete } = useContext(AppContext);
 
   const handleKeyboard = useCallback(
     (event: { key: any }) => {
-      if (event.key === "Backspace") {
+      if (event.key === 'Backspace') {
         onDelete();
       } else {
         keys1.forEach((key) => {
@@ -34,10 +33,10 @@ function Keyboard() {
     [{}]
   );
   useEffect(() => {
-    document.addEventListener("keydown", handleKeyboard);
+    document.addEventListener('keydown', handleKeyboard);
 
     return () => {
-      document.removeEventListener("keydown", handleKeyboard);
+      document.removeEventListener('keydown', handleKeyboard);
     };
   }, [handleKeyboard]);
 

@@ -2,8 +2,9 @@ import Header from './components/Header';
 import Welcome from './components/Welcome';
 import Board from './components/Board';
 import Keyboard from './components/Keyboard';
-import React, { useState, createContext } from 'react';
-import { boardDefault } from './Words';
+import React, { useState, createContext, useEffect } from 'react';
+import { boardDefault, generateWordSet } from './Words';
+
 import './App.css';
 
 export const AppContext = createContext<any | null>(null);
@@ -14,17 +15,28 @@ export interface position {
 }
 
 function App() {
-  const correctWord = 'RIGHT';
-
   const [board, setBoard] = useState(boardDefault);
   const [currAttempt, setCurrAttempt] = useState({
     rowNum: 0,
     letterPos: 0,
   });
-
   const [page, setPage] = useState('welcome');
+  const [formLoginOpen, setFormLoginOpen] = useState<boolean>(false);
+  const [correctWord, setCorrectWord] = useState('');
+
+  useEffect(() => {
+    setCorrectWord(generateWordSet().wordToGuess);
+  }, []);
+
+  const handleFormLoginOpen = (value: boolean) => {
+    setFormLoginOpen(value);
+  };
 
   const onSelectLetter = (keyVal: any) => {
+    if (formLoginOpen) {
+      return;
+    }
+
     const newBoard = [...board];
     if (currAttempt.rowNum > 5) {
       alert('done');
@@ -33,6 +45,7 @@ function App() {
     if (currAttempt.letterPos === 4) {
       newBoard[currAttempt.rowNum][currAttempt.letterPos] = keyVal;
       setBoard(newBoard);
+
       setCurrAttempt({ rowNum: currAttempt.rowNum + 1, letterPos: 0 });
     } else {
       newBoard[currAttempt.rowNum][currAttempt.letterPos] = keyVal;
@@ -53,6 +66,7 @@ function App() {
     <div className="App">
       {page === 'welcome' && (
         <>
+          <Header handleFormLoginOpen={handleFormLoginOpen}></Header>
           <Welcome setPage={setPage} />
         </>
       )}
@@ -71,7 +85,7 @@ function App() {
                 correctWord,
               }}
             >
-              <Header></Header>
+              <Header handleFormLoginOpen={handleFormLoginOpen}></Header>
               <Board></Board>
               <Keyboard></Keyboard>
             </AppContext.Provider>
