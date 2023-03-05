@@ -7,8 +7,7 @@ interface myLetter {
 }
 
 const Letter: React.FC<myLetter> = ({ rowNumber, letterPos }) => {
-  const { board, currAttempt, correctWord, greyLetters, setGreenLetters, yellowLetters, setYellowLetters, greenLetters, setGreyLetters } =
-    useContext(AppContext);
+  const { board, currAttempt, correctWord, setGreenLetters, setYellowLetters, setGreyLetters } = useContext(AppContext);
   const letter = board[rowNumber][letterPos].toLowerCase();
   const correct = correctWord[letterPos] === letter;
   const ind = rowNumber * 2 + letterPos;

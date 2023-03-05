@@ -6,6 +6,7 @@ import React, { useState, createContext, useEffect } from 'react';
 import { boardDefault, generateWordSet } from './Words';
 
 import './App.css';
+import GameOver from './components/Gameover';
 
 export const AppContext = createContext<any | null>(null);
 
@@ -26,7 +27,7 @@ function App() {
   const [greenLetters, setGreenLetters] = useState([]);
   const [yellowLetters, setYellowLetters] = useState([]);
   const [greyLetters, setGreyLetters] = useState([]);
-
+  const [gameOver, setGameOver] = useState({ gameOver: false, guessed: false });
   useEffect(() => {
     setCorrectWord(generateWordSet().wordToGuess);
   }, []);
@@ -39,16 +40,20 @@ function App() {
     if (formLoginOpen) {
       return;
     }
-
     const newBoard = [...board];
-    if (currAttempt.rowNum > 5) {
-      alert('done');
-      return;
-    }
+
     if (currAttempt.letterPos === 4) {
       newBoard[currAttempt.rowNum][currAttempt.letterPos] = keyVal;
       setBoard(newBoard);
-
+      let currWord = '';
+      for (let i = 0; i < 5; i++) {
+        currWord += board[currAttempt.rowNum][i];
+      }
+      if (correctWord === currWord.toLowerCase()) {
+        setGameOver({ gameOver: true, guessed: true });
+      } else if (currAttempt.rowNum === 5) {
+        setGameOver({ gameOver: true, guessed: false });
+      }
       setCurrAttempt({ rowNum: currAttempt.rowNum + 1, letterPos: 0 });
     } else {
       newBoard[currAttempt.rowNum][currAttempt.letterPos] = keyVal;
@@ -92,11 +97,14 @@ function App() {
                 setYellowLetters,
                 greyLetters,
                 setGreyLetters,
+                gameOver,
+                setGameOver,
               }}
             >
               <Header handleFormLoginOpen={handleFormLoginOpen}></Header>
               <Board></Board>
-              <Keyboard></Keyboard>
+              {gameOver.gameOver ? <GameOver></GameOver> : <Keyboard></Keyboard>}
+              {/* <Keyboard></Keyboard> */}
             </AppContext.Provider>
           </div>
         </>
