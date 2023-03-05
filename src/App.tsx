@@ -23,6 +23,9 @@ function App() {
   const [page, setPage] = useState('welcome');
   const [formLoginOpen, setFormLoginOpen] = useState<boolean>(false);
   const [correctWord, setCorrectWord] = useState('');
+  const [greenLetters, setGreenLetters] = useState([]);
+  const [yellowLetters, setYellowLetters] = useState([]);
+  const [greyLetters, setGreyLetters] = useState([]);
 
   useEffect(() => {
     setCorrectWord(generateWordSet().wordToGuess);
@@ -83,6 +86,12 @@ function App() {
                 onSelectLetter,
                 onDelete,
                 correctWord,
+                greenLetters,
+                setGreenLetters,
+                yellowLetters,
+                setYellowLetters,
+                greyLetters,
+                setGreyLetters,
               }}
             >
               <Header handleFormLoginOpen={handleFormLoginOpen}></Header>

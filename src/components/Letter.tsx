@@ -1,5 +1,4 @@
-import React, { useContext } from 'react';
-
+import React, { useContext, useEffect } from 'react';
 import { AppContext } from '../App';
 
 interface myLetter {
@@ -8,7 +7,8 @@ interface myLetter {
 }
 
 const Letter: React.FC<myLetter> = ({ rowNumber, letterPos }) => {
-  const { board, currAttempt, correctWord } = useContext(AppContext);
+  const { board, currAttempt, correctWord, greyLetters, setGreenLetters, yellowLetters, setYellowLetters, greenLetters, setGreyLetters } =
+    useContext(AppContext);
   const letter = board[rowNumber][letterPos].toLowerCase();
   const correct = correctWord[letterPos] === letter;
   const ind = rowNumber * 2 + letterPos;
@@ -17,6 +17,16 @@ const Letter: React.FC<myLetter> = ({ rowNumber, letterPos }) => {
   if (currAttempt.rowNum > rowNumber) {
     letterState = correct ? 'correct' : exists ? 'exists' : 'error';
   }
+  useEffect(() => {
+    if (correct) {
+      setGreenLetters((prev: any) => [...prev, letter]);
+    } else if (exists) {
+      setYellowLetters((prev: any) => [...prev, letter]);
+    } else if (!correctWord.includes(letter)) {
+      setGreyLetters((prev: any) => [...prev, letter]);
+    }
+  }, [currAttempt.rowNum]);
+
   return (
     <div className="letter" tabIndex={ind} id={letterState}>
       {letter.toUpperCase()}
