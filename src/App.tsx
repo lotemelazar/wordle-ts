@@ -104,7 +104,6 @@ function App() {
               <Header handleFormLoginOpen={handleFormLoginOpen}></Header>
               <Board></Board>
               {gameOver.gameOver ? <GameOver></GameOver> : <Keyboard></Keyboard>}
-              {/* <Keyboard></Keyboard> */}
             </AppContext.Provider>
           </div>
         </>
