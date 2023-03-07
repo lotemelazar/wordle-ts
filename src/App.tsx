@@ -3,8 +3,7 @@ import Welcome from './components/Welcome';
 import Board from './components/Board';
 import Keyboard from './components/Keyboard';
 import React, { useState, createContext, useEffect } from 'react';
-import { boardDefault, generateWordSet } from './Words';
-
+import { boardDefault } from './Words';
 import './App.css';
 import GameOver from './components/Gameover';
 
@@ -23,14 +22,13 @@ function App() {
   });
   const [page, setPage] = useState('welcome');
   const [formLoginOpen, setFormLoginOpen] = useState<boolean>(false);
+  const [correctWordInd, setCorrectWordInd] = useState('');
   const [correctWord, setCorrectWord] = useState('');
   const [greenLetters, setGreenLetters] = useState([]);
   const [yellowLetters, setYellowLetters] = useState([]);
   const [greyLetters, setGreyLetters] = useState([]);
   const [gameOver, setGameOver] = useState({ gameOver: false, guessed: false });
-  useEffect(() => {
-    setCorrectWord(generateWordSet().wordToGuess);
-  }, []);
+  useEffect(() => {}, [page]);
 
   const handleFormLoginOpen = (value: boolean) => {
     setFormLoginOpen(value);
@@ -75,7 +73,7 @@ function App() {
       {page === 'welcome' && (
         <>
           <Header handleFormLoginOpen={handleFormLoginOpen}></Header>
-          <Welcome setPage={setPage} />
+          <Welcome setPage={setPage} setCorrectWordInd={setCorrectWordInd} setCorrectWord={setCorrectWord} />
         </>
       )}
 
@@ -90,6 +88,7 @@ function App() {
                 setCurrAttempt,
                 onSelectLetter,
                 onDelete,
+                correctWordInd,
                 correctWord,
                 greenLetters,
                 setGreenLetters,
