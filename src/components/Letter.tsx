@@ -1,5 +1,7 @@
 import React, { useContext, useEffect } from 'react';
+import { string } from 'yargs';
 import { AppContext } from '../App';
+import { generateWordSet, checkGuess, letterExists, letterIsCorrect } from '../Requests/server-req';
 
 interface myLetter {
   rowNumber: number;
@@ -7,29 +9,82 @@ interface myLetter {
 }
 
 const Letter: React.FC<myLetter> = ({ rowNumber, letterPos }) => {
-  const { board, currAttempt, correctWord, setGreenLetters, setYellowLetters, setGreyLetters } = useContext(AppContext);
-  const letter = board[rowNumber][letterPos].toLowerCase();
-  const correct = correctWord[letterPos] === letter;
-  const ind = rowNumber * 2 + letterPos;
-  const exists = !correct && letter !== '' && correctWord.includes(letter);
+  const { board, currAttempt, correctWordInd, correctWord, setGreenLetters, setYellowLetters, setGreyLetters } = useContext(AppContext);
+  const letter: string = board[rowNumber][letterPos].toLowerCase();
+  let isCorrect = letter === correctWord[letterPos];
+  let isExists = !isCorrect && letter !== '' && correctWord.includes(letter);
   let letterState = '';
   if (currAttempt.rowNum > rowNumber) {
-    letterState = correct ? 'correct' : exists ? 'exists' : 'error';
+    letterState = isCorrect ? 'correct' : isExists ? 'exists' : 'error';
   }
   useEffect(() => {
-    if (correct) {
+    if (isCorrect) {
       setGreenLetters((prev: any) => [...prev, letter]);
-    } else if (exists) {
+    } else if (isExists) {
       setYellowLetters((prev: any) => [...prev, letter]);
-    } else if (!correctWord.includes(letter)) {
+    } else if (!isExists && !isCorrect) {
       setGreyLetters((prev: any) => [...prev, letter]);
     }
   }, [currAttempt.rowNum]);
 
   return (
-    <div className="letter" tabIndex={ind} id={letterState}>
+    <div className="letter" id={letterState}>
       {letter.toUpperCase()}
     </div>
   );
 };
 export default Letter;
+
+//////////////////////////////////////////////////////////////////////////////////
+
+// import React, { useContext, useEffect } from 'react';
+// import { string } from 'yargs';
+// import { AppContext } from '../App';
+// import { generateWordSet, checkGuess, letterExists, letterIsCorrect } from '../Requests/server-req';
+
+// interface myLetter {
+//   rowNumber: number;
+//   letterPos: number;
+// }
+
+// const Letter: React.FC<myLetter> = ({ rowNumber, letterPos }) => {
+//   const { board, currAttempt, correctWordInd, correctWord, setGreenLetters, setYellowLetters, setGreyLetters } = useContext(AppContext);
+//   const letter: string = board[rowNumber][letterPos].toLowerCase();
+//   let isCorrect = false;
+//   let isExists = false;
+//   letterIsCorrect(correctWordInd, String(letterPos), letter).then((ans) => {
+//     if (ans === true) {
+//       isCorrect = true;
+//     }
+//   });
+
+//   letterExists(correctWordInd, letter).then((ans) => {
+//     if (ans === true) {
+//       isExists = true;
+//     }
+//   });
+
+//   //  letter === correctWord[letterPos];
+//   isExists = !isCorrect && letter !== '' && isExists;
+//   const ind = rowNumber * 2 + letterPos;
+//   let letterState = '';
+//   if (currAttempt.rowNum > rowNumber) {
+//     letterState = isCorrect ? 'correct' : isExists ? 'exists' : 'error';
+//   }
+//   useEffect(() => {
+//     if (isCorrect) {
+//       setGreenLetters((prev: any) => [...prev, letter]);
+//     } else if (isExists) {
+//       setYellowLetters((prev: any) => [...prev, letter]);
+//     } else if (!isExists && !isCorrect) {
+//       setGreyLetters((prev: any) => [...prev, letter]);
+//     }
+//   }, [currAttempt.rowNum]);
+
+//   return (
+//     <div className="letter" tabIndex={ind} id={letterState}>
+//       {letter.toUpperCase()}
+//     </div>
+//   );
+// };
+// export default Letter;

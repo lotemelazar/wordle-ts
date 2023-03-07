@@ -3,10 +3,12 @@ import Welcome from './components/Welcome';
 import Board from './components/Board';
 import Keyboard from './components/Keyboard';
 import React, { useState, createContext, useEffect } from 'react';
-import { boardDefault, generateWordSet } from './Words';
-
+import { boardDefault } from './Words';
+import { generateWordSet, checkGuess, getCorrectWord } from './Requests/server-req';
 import './App.css';
 import GameOver from './components/Gameover';
+import { result } from 'cypress/types/lodash';
+import { number } from 'yargs';
 
 export const AppContext = createContext<any | null>(null);
 
@@ -23,14 +25,13 @@ function App() {
   });
   const [page, setPage] = useState('welcome');
   const [formLoginOpen, setFormLoginOpen] = useState<boolean>(false);
+  const [correctWordInd, setCorrectWordInd] = useState('');
   const [correctWord, setCorrectWord] = useState('');
   const [greenLetters, setGreenLetters] = useState([]);
   const [yellowLetters, setYellowLetters] = useState([]);
   const [greyLetters, setGreyLetters] = useState([]);
   const [gameOver, setGameOver] = useState({ gameOver: false, guessed: false });
-  useEffect(() => {
-    setCorrectWord(generateWordSet().wordToGuess);
-  }, []);
+  useEffect(() => {}, [page]);
 
   const handleFormLoginOpen = (value: boolean) => {
     setFormLoginOpen(value);
@@ -49,11 +50,21 @@ function App() {
       for (let i = 0; i < 5; i++) {
         currWord += board[currAttempt.rowNum][i];
       }
+
       if (correctWord === currWord.toLowerCase()) {
         setGameOver({ gameOver: true, guessed: true });
       } else if (currAttempt.rowNum === 5) {
         setGameOver({ gameOver: true, guessed: false });
       }
+
+      // checkGuess(correctWordInd, currWord.toLowerCase()).then((ans) => {
+      //   if (ans === true) {
+      //     setGameOver({ gameOver: true, guessed: true });
+      //   } else if (currAttempt.rowNum === 5) {
+      //     setGameOver({ gameOver: true, guessed: false });
+      //   }
+      // });
+
       setCurrAttempt({ rowNum: currAttempt.rowNum + 1, letterPos: 0 });
     } else {
       newBoard[currAttempt.rowNum][currAttempt.letterPos] = keyVal;
@@ -75,7 +86,7 @@ function App() {
       {page === 'welcome' && (
         <>
           <Header handleFormLoginOpen={handleFormLoginOpen}></Header>
-          <Welcome setPage={setPage} />
+          <Welcome setPage={setPage} setCorrectWordInd={setCorrectWordInd} setCorrectWord={setCorrectWord} />
         </>
       )}
 
@@ -90,6 +101,7 @@ function App() {
                 setCurrAttempt,
                 onSelectLetter,
                 onDelete,
+                correctWordInd,
                 correctWord,
                 greenLetters,
                 setGreenLetters,
