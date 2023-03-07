@@ -4,11 +4,8 @@ import Board from './components/Board';
 import Keyboard from './components/Keyboard';
 import React, { useState, createContext, useEffect } from 'react';
 import { boardDefault } from './Words';
-import { generateWordSet, checkGuess, getCorrectWord } from './Requests/server-req';
 import './App.css';
 import GameOver from './components/Gameover';
-import { result } from 'cypress/types/lodash';
-import { number } from 'yargs';
 
 export const AppContext = createContext<any | null>(null);
 
@@ -50,21 +47,11 @@ function App() {
       for (let i = 0; i < 5; i++) {
         currWord += board[currAttempt.rowNum][i];
       }
-
       if (correctWord === currWord.toLowerCase()) {
         setGameOver({ gameOver: true, guessed: true });
       } else if (currAttempt.rowNum === 5) {
         setGameOver({ gameOver: true, guessed: false });
       }
-
-      // checkGuess(correctWordInd, currWord.toLowerCase()).then((ans) => {
-      //   if (ans === true) {
-      //     setGameOver({ gameOver: true, guessed: true });
-      //   } else if (currAttempt.rowNum === 5) {
-      //     setGameOver({ gameOver: true, guessed: false });
-      //   }
-      // });
-
       setCurrAttempt({ rowNum: currAttempt.rowNum + 1, letterPos: 0 });
     } else {
       newBoard[currAttempt.rowNum][currAttempt.letterPos] = keyVal;
