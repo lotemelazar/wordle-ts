@@ -1,5 +1,7 @@
-import React, { useContext, useEffect } from 'react';
+
+import React, { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../App';
+import { letterExists, letterIsCorrect } from '../Requests/server-req';
 
 interface myLetter {
   rowNumber: number;
@@ -7,10 +9,23 @@ interface myLetter {
 }
 
 const Letter: React.FC<myLetter> = ({ rowNumber, letterPos }) => {
-  const { board, currAttempt, correctWordInd, correctWord, setGreenLetters, setYellowLetters, setGreyLetters } = useContext(AppContext);
+  const { board, currAttempt, correctWordInd, setGreenLetters, setYellowLetters, setGreyLetters } = useContext(AppContext);
+  const [isCorrect, setIsCorrect] = useState(false);
+  const [isExists, setIsExists] = useState(false);
   const letter: string = board[rowNumber][letterPos].toLowerCase();
-  let isCorrect = letter === correctWord[letterPos];
-  let isExists = !isCorrect && letter !== '' && correctWord.includes(letter);
+
+  if (letter !== '' && correctWordInd !== '') {
+    letterIsCorrect(correctWordInd, String(letterPos), letter).then((ans) => {
+      if (ans === true) {
+        setIsCorrect(true);
+      }
+    });
+    letterExists(correctWordInd, letter).then((res) => {
+      if (res === true && !isCorrect) {
+        setIsExists(true);
+      }
+    });
+  }
   let letterState = '';
   if (currAttempt.rowNum > rowNumber) {
     letterState = isCorrect ? 'correct' : isExists ? 'exists' : 'error';
