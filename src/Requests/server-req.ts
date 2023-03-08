@@ -1,11 +1,6 @@
-export async function generateWordSet() {
-  const wordInd = fetch(`http://localhost:3333/word`).then((response) => response.text());
+export async function generateWordInd() {
+  const wordInd = fetch(`http://localhost:3333/wordInd`).then((response) => response.text());
   return wordInd;
-}
-
-export async function getCorrectWord(index: string) {
-  const word = fetch(`http://localhost:3333/correctWord/${index}`).then((response) => response.json());
-  return word;
 }
 
 export async function checkGuess(wordToGuessIndex: string, guess: string) {

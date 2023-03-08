@@ -4,11 +4,9 @@ import Board from './components/Board';
 import Keyboard from './components/Keyboard';
 import React, { useState, createContext, useEffect } from 'react';
 import { boardDefault } from './Words';
-import { generateWordSet, checkGuess, getCorrectWord } from './Requests/server-req';
+import { checkGuess } from './Requests/server-req';
 import './App.css';
 import GameOver from './components/Gameover';
-import { result } from 'cypress/types/lodash';
-import { number } from 'yargs';
 
 export const AppContext = createContext<any | null>(null);
 
@@ -26,7 +24,6 @@ function App() {
   const [page, setPage] = useState('welcome');
   const [formLoginOpen, setFormLoginOpen] = useState<boolean>(false);
   const [correctWordInd, setCorrectWordInd] = useState('');
-  const [correctWord, setCorrectWord] = useState('');
   const [greenLetters, setGreenLetters] = useState([]);
   const [yellowLetters, setYellowLetters] = useState([]);
   const [greyLetters, setGreyLetters] = useState([]);
@@ -51,19 +48,13 @@ function App() {
         currWord += board[currAttempt.rowNum][i];
       }
 
-      if (correctWord === currWord.toLowerCase()) {
-        setGameOver({ gameOver: true, guessed: true });
-      } else if (currAttempt.rowNum === 5) {
-        setGameOver({ gameOver: true, guessed: false });
-      }
-
-      // checkGuess(correctWordInd, currWord.toLowerCase()).then((ans) => {
-      //   if (ans === true) {
-      //     setGameOver({ gameOver: true, guessed: true });
-      //   } else if (currAttempt.rowNum === 5) {
-      //     setGameOver({ gameOver: true, guessed: false });
-      //   }
-      // });
+      checkGuess(correctWordInd, currWord.toLowerCase()).then((ans) => {
+        if (ans === true) {
+          setGameOver({ gameOver: true, guessed: true });
+        } else if (currAttempt.rowNum === 5) {
+          setGameOver({ gameOver: true, guessed: false });
+        }
+      });
 
       setCurrAttempt({ rowNum: currAttempt.rowNum + 1, letterPos: 0 });
     } else {
@@ -74,11 +65,7 @@ function App() {
   };
 
   const onDelete = () => {
-    if (currAttempt.letterPos === 0) return;
-    const newBoard = [...board];
-    newBoard[currAttempt.rowNum][currAttempt.letterPos - 1] = '';
-    setBoard(newBoard);
-    setCurrAttempt({ ...currAttempt, letterPos: currAttempt.letterPos - 1 });
+    return;
   };
 
   return (
@@ -86,7 +73,7 @@ function App() {
       {page === 'welcome' && (
         <>
           <Header handleFormLoginOpen={handleFormLoginOpen}></Header>
-          <Welcome setPage={setPage} setCorrectWordInd={setCorrectWordInd} setCorrectWord={setCorrectWord} />
+          <Welcome setPage={setPage} setCorrectWordInd={setCorrectWordInd} />
         </>
       )}
 
@@ -102,7 +89,6 @@ function App() {
                 onSelectLetter,
                 onDelete,
                 correctWordInd,
-                correctWord,
                 greenLetters,
                 setGreenLetters,
                 yellowLetters,
