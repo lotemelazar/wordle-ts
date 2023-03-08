@@ -1,13 +1,16 @@
 import React from 'react';
-import { generateWordSet } from '../Requests/server-req';
+import { generateWordInd } from '../Requests/server-req';
 
 function Welcome(props: any): JSX.Element {
   const handleStartBtn = () => {
     props.setPage('game');
-    generateWordSet().then((word) => {
-      props.setCorrectWord(word);
+    generateWordInd().then((wordInd) => {
+      if (wordInd !== '') {
+        props.setCorrectWordInd(wordInd);
+      }
     });
   };
+
   return (
     <>
       <div className="welcome">
