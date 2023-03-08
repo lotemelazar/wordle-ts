@@ -14,7 +14,6 @@ const Letter: React.FC<myLetter> = ({ rowNumber, letterPos }) => {
   const letter: string = board[rowNumber][letterPos].toLowerCase();
 
   if (letter !== '' && correctWordInd !== '') {
-    console.log(correctWordInd);
     letterIsCorrect(correctWordInd, String(letterPos), letter).then((ans) => {
       if (ans === true) {
         setIsCorrect(true);
@@ -29,7 +28,6 @@ const Letter: React.FC<myLetter> = ({ rowNumber, letterPos }) => {
   let letterState = '';
   if (currAttempt.rowNum > rowNumber) {
     letterState = isCorrect ? 'correct' : isExists ? 'exists' : 'error';
-    console.log(letter, letterState, letterPos);
   }
   useEffect(() => {
     if (isCorrect) {
